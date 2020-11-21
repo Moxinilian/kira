@@ -76,7 +76,7 @@ impl<CustomEvent: Copy + std::fmt::Debug> Sequences<CustomEvent> {
 		for (id, sequence) in &mut self.sequences {
 			sequence.update(dt, metronome, &mut self.sequence_output_command_queue);
 			// convert sequence commands to commands that can be consumed
-			// by the backend
+			// by the processor
 			for command in self.sequence_output_command_queue.drain(..) {
 				self.output_command_queue.push(match command {
 					SequenceOutputCommand::PlaySound(instance_id, sound_id, settings) => {

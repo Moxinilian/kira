@@ -20,7 +20,7 @@ use instances::Instances;
 use ringbuf::{Consumer, Producer};
 use sequences::Sequences;
 
-pub(crate) struct BackendThreadChannels<CustomEvent: Copy + Send + 'static + std::fmt::Debug> {
+pub(crate) struct ProcessorThreadChannels<CustomEvent: Copy + Send + 'static + std::fmt::Debug> {
 	pub command_consumer: Consumer<Command<CustomEvent>>,
 	pub event_producer: Producer<Event<CustomEvent>>,
 	pub sounds_to_unload_producer: Producer<Sound>,
@@ -29,11 +29,11 @@ pub(crate) struct BackendThreadChannels<CustomEvent: Copy + Send + 'static + std
 	pub effect_slots_to_unload_producer: Producer<EffectSlot>,
 }
 
-pub(crate) struct Backend<CustomEvent: Copy + Send + 'static + std::fmt::Debug> {
+pub(crate) struct Processor<CustomEvent: Copy + Send + 'static + std::fmt::Debug> {
 	dt: f64,
 	sounds: IndexMap<SoundId, Sound>,
 	command_queue: Vec<Command<CustomEvent>>,
-	thread_channels: BackendThreadChannels<CustomEvent>,
+	thread_channels: ProcessorThreadChannels<CustomEvent>,
 	metronome: Metronome,
 	parameters: Parameters,
 	instances: Instances,
@@ -41,11 +41,11 @@ pub(crate) struct Backend<CustomEvent: Copy + Send + 'static + std::fmt::Debug> 
 	mixer: Mixer,
 }
 
-impl<CustomEvent: Copy + Send + 'static + std::fmt::Debug> Backend<CustomEvent> {
+impl<CustomEvent: Copy + Send + 'static + std::fmt::Debug> Processor<CustomEvent> {
 	pub fn new(
 		sample_rate: u32,
 		settings: AudioManagerSettings,
-		thread_channels: BackendThreadChannels<CustomEvent>,
+		thread_channels: ProcessorThreadChannels<CustomEvent>,
 	) -> Self {
 		Self {
 			dt: 1.0 / sample_rate as f64,
