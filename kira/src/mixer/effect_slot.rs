@@ -16,6 +16,7 @@ impl EffectSlot {
 		}
 	}
 
+	#[cfg_attr(feature = "trace", tracing::instrument)]
 	pub(super) fn process(&mut self, dt: f64, input: Frame, parameters: &Parameters) -> Frame {
 		if self.enabled {
 			self.effect.process(dt, input, parameters)

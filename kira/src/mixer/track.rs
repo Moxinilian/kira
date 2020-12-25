@@ -100,6 +100,7 @@ impl Track {
 		self.input += input;
 	}
 
+	#[cfg_attr(feature = "trace", tracing::instrument)]
 	pub fn process(&mut self, dt: f64, parameters: &Parameters) -> Frame {
 		let mut input = self.input;
 		self.input = Frame::from_mono(0.0);

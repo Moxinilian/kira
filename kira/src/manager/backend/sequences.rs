@@ -30,6 +30,7 @@ impl Sequences {
 		self.sequence_instances.insert(id, instance);
 	}
 
+	#[cfg_attr(feature = "trace", tracing::instrument(skip(self, command)))]
 	pub fn run_command(&mut self, command: SequenceCommand, groups: &Groups) {
 		match command {
 			SequenceCommand::StartSequenceInstance(id, instance) => {

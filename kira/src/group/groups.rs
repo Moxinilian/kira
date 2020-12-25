@@ -4,6 +4,7 @@ use crate::command::GroupCommand;
 
 use super::{Group, GroupId};
 
+#[derive(Debug)]
 pub(crate) struct Groups {
 	groups: IndexMap<GroupId, Group>,
 }
@@ -19,6 +20,7 @@ impl Groups {
 		self.groups.get(&id)
 	}
 
+	#[cfg_attr(feature = "trace", tracing::instrument)]
 	pub fn run_command(&mut self, command: GroupCommand) -> Option<Group> {
 		match command {
 			GroupCommand::AddGroup(id, group) => {

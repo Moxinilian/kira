@@ -11,6 +11,7 @@ use indexmap::IndexMap;
 
 use super::mixer::Mixer;
 
+#[derive(Debug)]
 pub(crate) struct Instances {
 	instances: IndexMap<InstanceId, Instance>,
 	instances_to_remove: Vec<InstanceId>,
@@ -32,6 +33,7 @@ impl Instances {
 		}
 	}
 
+	#[cfg_attr(feature = "trace", tracing::instrument)]
 	pub fn run_command(
 		&mut self,
 		command: InstanceCommand,
@@ -166,6 +168,7 @@ impl Instances {
 		}
 	}
 
+	#[cfg_attr(feature = "trace", tracing::instrument(skip(mixer, )))]
 	pub fn process(
 		&mut self,
 		dt: f64,

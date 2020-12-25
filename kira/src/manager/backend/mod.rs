@@ -68,7 +68,8 @@ impl Backend {
 			groups: Groups::new(settings.num_groups),
 		}
 	}
-
+	
+	#[cfg_attr(feature = "trace", tracing::instrument(skip(self)))]
 	fn process_commands(&mut self) {
 		while let Some(command) = self.thread_channels.command_consumer.pop() {
 			self.command_queue.push(command);
@@ -141,18 +142,21 @@ impl Backend {
 		}
 	}
 
+	#[cfg_attr(feature = "trace", tracing::instrument(skip(self)))]
 	fn update_sounds(&mut self) {
 		for (_, sound) in &mut self.sounds {
 			sound.update_cooldown(self.dt);
 		}
 	}
 
+	#[cfg_attr(feature = "trace", tracing::instrument(skip(self)))]
 	fn update_arrangements(&mut self) {
 		for (_, arrangement) in &mut self.arrangements {
 			arrangement.update_cooldown(self.dt);
 		}
 	}
 
+	#[cfg_attr(feature = "trace", tracing::instrument(skip(self)))]
 	fn update_metronome(&mut self) {
 		for interval in self.metronome.update(self.dt, &self.parameters) {
 			match self
@@ -166,6 +170,7 @@ impl Backend {
 		}
 	}
 
+	#[cfg_attr(feature = "trace", tracing::instrument(skip(self)))]
 	fn update_sequences(&mut self) {
 		for command in self.sequences.update(
 			self.dt,
@@ -176,6 +181,7 @@ impl Backend {
 		}
 	}
 
+	#[cfg_attr(feature = "trace", tracing::instrument(skip(self)))]
 	pub fn process(&mut self) -> Frame {
 		self.process_commands();
 		self.parameters.update(self.dt);

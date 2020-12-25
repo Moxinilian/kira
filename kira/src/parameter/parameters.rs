@@ -25,6 +25,7 @@ impl Parameters {
 		self.parameters.get(&id)
 	}
 
+	#[cfg_attr(feature = "trace", tracing::instrument)]
 	pub(crate) fn run_command(&mut self, command: ParameterCommand) {
 		match command {
 			ParameterCommand::AddParameter(id, value) => {
@@ -42,6 +43,7 @@ impl Parameters {
 		}
 	}
 
+	#[cfg_attr(feature = "trace", tracing::instrument)]
 	pub(crate) fn update(&mut self, dt: f64) {
 		for (_, parameter) in &mut self.parameters {
 			parameter.update(dt);

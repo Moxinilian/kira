@@ -21,6 +21,14 @@ impl Mixer {
 		}
 	}
 
+	#[cfg_attr(
+		feature = "trace",
+		tracing::instrument(skip(
+			self,
+			tracks_to_unload_producer,
+			effect_slots_to_unload_producer
+		))
+	)]
 	pub fn run_command(
 		&mut self,
 		command: MixerCommand,
@@ -63,6 +71,7 @@ impl Mixer {
 		}
 	}
 
+	#[cfg_attr(feature = "trace", tracing::instrument(skip(self)))]
 	pub fn add_input(&mut self, index: TrackIndex, input: Frame) {
 		let track = match index {
 			TrackIndex::Main => &mut self.main_track,
@@ -71,6 +80,7 @@ impl Mixer {
 		track.add_input(input);
 	}
 
+	#[cfg_attr(feature = "trace", tracing::instrument(skip(self)))]
 	pub fn process(&mut self, dt: f64, parameters: &Parameters) -> Frame {
 		let mut main_input = Frame::from_mono(0.0);
 		for (_, sub_track) in &mut self.sub_tracks {

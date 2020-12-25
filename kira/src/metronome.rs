@@ -70,6 +70,7 @@ impl Metronome {
 		self.previous_time = 0.0;
 	}
 
+	#[cfg_attr(feature = "trace", tracing::instrument)]
 	pub fn run_command(&mut self, command: MetronomeCommand) {
 		match command {
 			MetronomeCommand::SetMetronomeTempo(tempo) => self.tempo.set(tempo),
@@ -79,6 +80,7 @@ impl Metronome {
 		}
 	}
 
+	#[cfg_attr(feature = "trace", tracing::instrument)]
 	pub fn update(&mut self, dt: f64, parameters: &Parameters) -> Drain<f64> {
 		self.tempo.update(parameters);
 		if self.ticking {
